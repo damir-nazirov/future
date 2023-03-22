@@ -1,0 +1,38 @@
+a{
+    text-decoration: none;
+}
+
+.book-list__counter {
+    font-style: italic;
+}
+
+.books__list {
+    margin-top: 30px;
+}
+
+.book-list__items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 100px;
+}
+
+button {
+    margin: 0 auto 20px auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    height: 38px;
+    line-height: 1.5;
+}
+
+button:hover {
+    background-color: #0056b3;
+  }
