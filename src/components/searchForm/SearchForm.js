@@ -49,7 +49,7 @@ const SearchForm = () => {
   useEffect(() => {
     dispatch(clearOffset());
     dispatch(changeSorting(selectedSorting));
-  }, [selectedSorting]);
+  }, [selectedSorting, dispatch]);
 
   return (
     <div className="search-form">

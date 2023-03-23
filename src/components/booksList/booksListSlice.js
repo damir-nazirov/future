@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { useHttp } from "../../hooks/http.hook";
+import {API_BASE, API_KEY, API_BASE_ById} from "../../api/apiConfig"
 
 const persistedBookId = localStorage.getItem("bookId");
 
 
 const initialState = {
     books: [],
+    booksFound: null,
     title: '',
     booksLoadingStatus: 'start',
     sorting: 'relevance',
@@ -16,10 +18,10 @@ const initialState = {
 }
 
 
-const _apiBase = 'https://www.googleapis.com/books/v1/volumes?q=';
+// const API_BASE = 'https://www.googleapis.com/books/v1/volumes?q=';
 
-// const _apiKey = 'AIzaSyDHyzZSk0BnLt1YHTaB0z3zYYwIVOBpo-0'; //на случай, если лимит запросов закончится
-const _apiKey = 'AIzaSyAsPmj8VJE8iiwhASmis_D-EEHaotnbiqc';
+// // const API_KEY = 'AIzaSyDHyzZSk0BnLt1YHTaB0z3zYYwIVOBpo-0'; //на случай, если лимит запросов закончится
+// const API_KEY = 'AIzaSyAsPmj8VJE8iiwhASmis_D-EEHaotnbiqc';
 
 const _transformbooks = ({ id, volumeInfo }) => {
     const {
@@ -41,23 +43,34 @@ const _transformbooks = ({ id, volumeInfo }) => {
     };
   };
 
-  const _apiBaseById = 'https://www.googleapis.com/books/v1/volumes/';
+  // const API_BASEById = 'https://www.googleapis.com/books/v1/volumes/';
 
 export const fetchBookById = createAsyncThunk(
   'books/fetchBookById',
   async (bookId) => {
     const { request } = useHttp();
-    return await request(`${_apiBaseById}${bookId}?key=${_apiKey}`);
+    return await request(`${API_BASE_ById}${bookId}?key=${API_KEY}`);
   }
 );
 
+// export const fetchBooks = createAsyncThunk(
+//     'books/fetchBooks',
+//     async ([title, offset, sorting]) => {
+//         const {request} = useHttp();
+//         return await request(`${API_BASE}${title}+intitle:${title}&startIndex=${offset}&maxResults=15&printType=books&projection=full&orderBy=${sorting}&key=${API_KEY}`);
+//     }
+// );
+
 export const fetchBooks = createAsyncThunk(
     'books/fetchBooks',
-    async ([title, offset, sorting]) => {
+    async ([title, offset, sorting, category]) => {
         const {request} = useHttp();
-        return await request(`${_apiBase}${title}+intitle:${title}&startIndex=${offset}&maxResults=15&printType=books&projection=full&orderBy=${sorting}&key=${_apiKey}`);
+        const categoryFilter = category !== "all" ? `+subject:${category}` : "";
+        return await request(`${API_BASE}${title}+intitle:${title}${categoryFilter}&startIndex=${offset}&maxResults=15&printType=books&projection=full&orderBy=${sorting}&key=${API_KEY}`);
     }
 );
+
+
 
 const booksSlice = createSlice({
     name: 'books',
@@ -98,11 +111,15 @@ const booksSlice = createSlice({
             .addCase(fetchBooks.pending, state => {state.booksLoadingStatus = 'loading'})
             .addCase(fetchBooks.fulfilled, (state, action) => {
                 state.booksLoadingStatus = 'idle';
-                const transformBooks = action.payload.items ?  action.payload.items.map(_transformbooks) : [{error: 'No books with this title found.', thumbnail: 'https://png-4.vector.me/files/images/6/8/687283/error_heading_thumb'}]
-                state.books = [...state.books, ...transformBooks];
-                state.newBooks = [transformBooks.length]
-
-            })
+                if (action.payload.items) {
+                  const transformBooks = action.payload.items.map(_transformbooks);
+                  state.books = [...state.books, ...transformBooks];
+                  state.newBooks = [transformBooks.length];
+                  state.booksFound = transformBooks.length > 0;
+                } else {
+                  state.booksFound = false;
+                }
+              })
             .addCase(fetchBooks.rejected, state => {
                 state.booksLoadingStatus = 'error';
             })

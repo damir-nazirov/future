@@ -1,10 +1,10 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import SearchForm from './features/searchForm/SearchForm';
-import SingleBookPage from './features/pages/SingleBookPage';
+import SearchForm from './components/searchForm/SearchForm';
+import SingleBookPage from './components/pages/SingleBookPage';
 
 import './App.css';
-import MainPage from './features/pages/MainPage';
+import MainPage from './components/pages/MainPage';
 
 function App() {
   return (

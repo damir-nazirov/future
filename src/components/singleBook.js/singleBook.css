@@ -33,6 +33,7 @@
     margin-bottom: 1rem;
     width: 138px;
     height: 196px;
+    align-self: center;
   }
   
   .single-book__info {

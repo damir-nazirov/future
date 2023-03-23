@@ -4,7 +4,6 @@ const SingleBookPage = () => {
 
     return (
             <SingleBook/>
-       
     )
 }
 
