@@ -81,6 +81,7 @@ const SearchForm = () => {
         <div className="search-form__categories">
           <div>Categories</div>
           <select
+            disabled={!isHomePage}
             className="search-form__select"
             onChange={(e) => {
               dispatch(changeCategory(e.target.value));
@@ -99,6 +100,7 @@ const SearchForm = () => {
         <div className="search-form__sorting">
           <div>Sorting by</div>
           <select
+            disabled={!isHomePage}
             className="search-form__select"
             onChange={(e) => {
               setSelectedSorting(e.target.value);
