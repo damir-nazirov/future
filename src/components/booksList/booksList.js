@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ErrorMessage from "../errorMessage/errorMessage";
 import {
   fetchBooks,
   changeOffset,
@@ -24,6 +25,7 @@ const BooksList = ({ items, onBookItemClick }) => {
     newBooks,
     category,
     booksFound,
+    error,
   } = useSelector((state) => state.books);
 
   // Функция для обработки клика на кнопку "Загрузить еще"
@@ -110,6 +112,7 @@ const BooksList = ({ items, onBookItemClick }) => {
       </ul>
       {renderNoBooksMessage()}
       {renderLoadMoreButton()}
+      <ErrorMessage error={error} />
     </div>
   );
 };

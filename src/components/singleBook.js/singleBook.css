@@ -58,23 +58,3 @@
     text-align: justify;
   }
   
-  .single-book__footer {
-    width: 100%;
-    text-align: center;
-  }
-  
-  .single-book__back {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-  
-  .single-book__back:hover {
-    background-color: #0056b3;
-  }
-  

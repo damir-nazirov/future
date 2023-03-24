@@ -1,16 +1,3 @@
-// import BooksList from "../booksList/booksList";
-
-
-// const MainPage = () => {
-
-//     return (
-//            <BooksList/>
-//     )
-// }
-
-// export default MainPage
-
-
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";

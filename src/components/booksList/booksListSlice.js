@@ -14,6 +14,7 @@ const initialState = {
   category: "all",
   bookId: persistedBookId || "",
   newBooks: 0,
+  error: null
 };
 
 const _transformbooks = ({ id, volumeInfo }) => {
@@ -34,23 +35,33 @@ const _transformbooks = ({ id, volumeInfo }) => {
 
 export const fetchBookById = createAsyncThunk(
   "books/fetchBookById",
-  async (bookId, { dispatch }) => {
-    // Сохраните bookId в состоянии и локальном хранилище
-    dispatch(changeBookId(bookId));
+  async (bookId, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(changeBookId(bookId));
 
-    const { request } = useHttp();
-    return await request(`${API_BASE_ById}${bookId}?key=${API_KEY}`);
+      const { request } = useHttp();
+      const response = await request(`${API_BASE_ById}${bookId}?key=${API_KEY}`);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
+
 export const fetchBooks = createAsyncThunk(
   "books/fetchBooks",
-  async ([title, offset, sorting, category]) => {
-    const { request } = useHttp();
-    const categoryFilter = category !== "all" ? `+subject:${category}` : "";
-    return await request(
-      `${API_BASE}${title}+intitle:${title}${categoryFilter}&startIndex=${offset}&maxResults=15&printType=books&projection=full&orderBy=${sorting}&key=${API_KEY}`
-    );
+  async ([title, offset, sorting, category], { rejectWithValue }) => {
+    try {
+      const { request } = useHttp();
+      const categoryFilter = category !== "all" ? `+subject:${category}` : "";
+      const response = await request(
+        `${API_BASE}${title}+intitle:${title}${categoryFilter}&startIndex=${offset}&maxResults=15&printType=books&projection=full&orderBy=${sorting}&key=${API_KEY}`
+      );
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
@@ -115,9 +126,11 @@ const booksSlice = createSlice({
           state.booksFound = false;
         }
       })
-      .addCase(fetchBooks.rejected, (state) => {
-        state.booksLoadingStatus = "error";
+      .addCase(fetchBooks.rejected, (state, action) => {
+        state.booksLoadingStatus = "idle";
+        state.error = action.payload;
       })
+  
       .addCase(fetchBookById.pending, (state, action) => {
         state.bookId = action.meta.arg;
         localStorage.setItem("bookId", action.meta.arg);
@@ -127,6 +140,10 @@ const booksSlice = createSlice({
         const book = _transformbooks(action.payload);
         state.books = [...state.books, book];
         state.booksLoadingStatus = "idle";
+      })
+      .addCase(fetchBookById.rejected, (state, action) => {
+        state.booksLoadingStatus = "idle";
+        state.error = action.payload;
       })
       .addDefaultCase(() => {});
   },

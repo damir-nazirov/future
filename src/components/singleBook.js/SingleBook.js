@@ -13,8 +13,6 @@ const SingleBook = () => {
     (state) => state.books
   );
 
-  console.log(bookId !== "");
-
   useEffect(() => {
     const persistedBookId = localStorage.getItem("bookId");
     if (persistedBookId && bookId !== persistedBookId) {
@@ -53,11 +51,6 @@ const SingleBook = () => {
           <BookInfoSection title="Authors" content={authors} />
         </div>
       </div>
-      <footer className="single-book__footer">
-        <Link to="/" className="single-book__back">
-          Back to all
-        </Link>
-      </footer>
     </div>
   );
 };
