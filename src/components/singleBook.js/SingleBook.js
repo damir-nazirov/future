@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
 import { changeBookId, fetchBookById } from "../booksList/booksListSlice";
 import Spinner from "../spinner/Spinner";
 import BookInfoSection from "../bookInfoSection/BookInfoSection";

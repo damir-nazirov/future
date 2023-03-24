@@ -2,31 +2,37 @@
     transition: 0.3s transform;
     list-style-type: none;
     flex-basis: 170px;
-    margin-bottom: 30px;
-}
-
-.books__item-img {
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+    margin-bottom: var(--spacing-large);
+  }
+  
+  .books__item-img {
+    box-shadow: var(--box-shadow);
     width: 138px;
     height: 196px;
-}
-
-.books__item-name {
-    margin-top: 10px;
+  }
+  
+  .books__item-name {
+    margin-top: var(--spacing-small);
     font-weight: bold;
-    font-size: 14px;
+    font-size: var(--font-size-base);
     line-height: 18px;
-}
-
-.books__item-price {
-    margin-top: 5px;
+    color: var(--text-primary);
+  }
+  
+  .books__item-authors, .books__item-category {
+    margin-top: var(--spacing-small);
     font-weight: bold;
-    font-size: 14px;
+    font-size: var(--font-size-small);
     line-height: 18px;
     color: rgba(0, 0, 0, 0.6);
-    text-transform: uppercase;
-}
+  }
 
-.books__item:hover {
+  .books__item-category {
+    font-style: italic;
+    font-weight: 400;
+  }
+  
+  .books__item:hover {
     transform: translateY(-5px);
-}
+  }
+  

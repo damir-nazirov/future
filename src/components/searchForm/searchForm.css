@@ -1,4 +1,4 @@
-* {
+/* * {
   box-sizing: border-box;
 }
 
@@ -7,21 +7,16 @@
   flex-direction: column;
   align-items: center;
   padding: 0 1rem 2rem 1rem;
-  background-color: #f5f5f5;
-  border-radius: 5px;
+  background-color: var(--components-background-color);
+  border-radius: var(--border-radius-small);
   max-width: 600px;
   margin: 20px auto;
   width: 90%;
 }
 
-.search-form__header {
-  margin-bottom: 1rem;
-}
-
 .search-form__input-group {
   display: flex;
   width: 100%;
-  margin-bottom: 1rem;
 }
 
 .search-form__input {
@@ -75,6 +70,88 @@
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 6rem;
+}
+
+@media screen and (max-width: 455px) {
+  .search-form__filters {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+} */
+
+
+* {
+  box-sizing: border-box;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1rem 2rem 1rem;
+  background-color: var(--components-background-color);
+  border-radius: var(--border-radius-small);
+  max-width: 600px;
+  /* margin: 20px auto; */
+  width: 90%;
+}
+
+.search-form__input-group {
+  display: flex;
+  width: 100%;
+}
+
+.search-form__input {
+  padding: var(--spacing-small);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-small);
+  width: 100%;
+  height: calc(2 * var(--spacing-small) + var(--font-size-base));
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.search-form__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-small) var(--spacing-medium);
+  background-color: var(--button-color);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: var(--border-radius-small);
+  transition: all 0.3s;
+  height: calc(2 * var(--spacing-small) + var(--font-size-base));
+  line-height: 1.5;
+  margin-left: var(--spacing-medium);
+}
+
+.search-form__button:hover {
+   background-color: var(--button-hover-color);
+ 
+}
+
+.search-form__filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.search-form__categories,
+.search-form__sorting {
+  display: flex;
+  align-items: center;
+}
+
+.search-form__select {
+  margin-top: var(--spacing-small);
+  margin-left: var(--spacing-small);
+  padding: var(--spacing-small);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-small);
   width: 6rem;
 }
 

@@ -1,3 +1,10 @@
-.back-button {
+.back-button a {
     margin-bottom: 2rem;
+    color: var(--button-color);
+    transition: all 0.3s;
+   
+}
+
+.back-button:hover a {
+    color: var(--button-hover-color);
 }
