@@ -1,6 +1,7 @@
+
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { changeBookId, fetchBookById } from "../booksList/booksListSlice";
+import { fetchBookById } from "../booksList/booksListSlice";
 import Spinner from "../spinner/Spinner";
 import BookInfoSection from "../bookInfoSection/BookInfoSection";
 
@@ -8,18 +9,11 @@ import "./singleBook.css";
 
 const SingleBook = () => {
   const dispatch = useDispatch();
-  const { books, bookId, booksLoadingStatus } = useSelector(
+  const { bookId, booksLoadingStatus, singleBook } = useSelector(
     (state) => state.books
   );
 
-  useEffect(() => {
-    const persistedBookId = localStorage.getItem("bookId");
-    if (persistedBookId && bookId !== persistedBookId) {
-      dispatch(changeBookId(persistedBookId));
-    }
-  }, [bookId, dispatch]);
-
-  const bookData = books.find((item) => item.id === bookId);
+  const bookData = singleBook[0]
 
   useEffect(() => {
     if (!bookData && bookId) {

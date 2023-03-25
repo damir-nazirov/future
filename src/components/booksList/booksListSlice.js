@@ -1,20 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { useHttp } from "../../hooks/http.hook";
 import { API_BASE, API_KEY, API_BASE_ById } from "../../api/apiConfig";
+import { BOOKS_PER_PAGE } from "../../constants";
 
 const persistedBookId = localStorage.getItem("bookId");
+const persistedTitle = localStorage.getItem("title");
+const persistedBooks = localStorage.getItem("books");
 
 const initialState = {
-  books: [],
+  books: persistedBooks ? JSON.parse(persistedBooks) : [],
   booksFound: null,
-  title: "",
+  title: persistedTitle || "",
   booksLoadingStatus: "start",
   sorting: "relevance",
   offset: 0,
   category: "all",
   bookId: persistedBookId || "",
   newBooks: 0,
-  error: null
+  error: null,
+  singleBook: [],
 };
 
 const _transformbooks = ({ id, volumeInfo }) => {
@@ -40,14 +44,15 @@ export const fetchBookById = createAsyncThunk(
       dispatch(changeBookId(bookId));
 
       const { request } = useHttp();
-      const response = await request(`${API_BASE_ById}${bookId}?key=${API_KEY}`);
+      const response = await request(
+        `${API_BASE_ById}${bookId}?key=${API_KEY}`
+      );
       return response;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
-
 
 export const fetchBooks = createAsyncThunk(
   "books/fetchBooks",
@@ -56,7 +61,7 @@ export const fetchBooks = createAsyncThunk(
       const { request } = useHttp();
       const categoryFilter = category !== "all" ? `+subject:${category}` : "";
       const response = await request(
-        `${API_BASE}${title}+intitle:${title}${categoryFilter}&startIndex=${offset}&maxResults=15&printType=books&projection=full&orderBy=${sorting}&key=${API_KEY}`
+        `${API_BASE}${title}+intitle:${title}${categoryFilter}&startIndex=${offset}&maxResults=${BOOKS_PER_PAGE}&printType=books&projection=full&orderBy=${sorting}&key=${API_KEY}`
       );
       return response;
     } catch (error) {
@@ -88,6 +93,7 @@ const booksSlice = createSlice({
     },
     changeTitle: (state, action) => {
       state.title = action.payload;
+      localStorage.setItem("title", action.payload);
     },
     clearBooks: (state) => {
       state.books = [];
@@ -96,6 +102,7 @@ const booksSlice = createSlice({
       state.offset = 0;
     },
     changeSorting: (state, action) => {
+      state.books = [];
       state.sorting = action.payload;
     },
     changeCategory: (state, action) => {
@@ -122,6 +129,7 @@ const booksSlice = createSlice({
           state.books = uniqueBooks;
           state.newBooks = transformBooks.length;
           state.booksFound = transformBooks.length > 0;
+          localStorage.setItem("books", JSON.stringify(uniqueBooks));
         } else {
           state.booksFound = false;
         }
@@ -130,7 +138,7 @@ const booksSlice = createSlice({
         state.booksLoadingStatus = "idle";
         state.error = action.payload;
       })
-  
+
       .addCase(fetchBookById.pending, (state, action) => {
         state.bookId = action.meta.arg;
         localStorage.setItem("bookId", action.meta.arg);
@@ -138,7 +146,7 @@ const booksSlice = createSlice({
       })
       .addCase(fetchBookById.fulfilled, (state, action) => {
         const book = _transformbooks(action.payload);
-        state.books = [...state.books, book];
+        state.singleBook = [book];
         state.booksLoadingStatus = "idle";
       })
       .addCase(fetchBookById.rejected, (state, action) => {
@@ -161,4 +169,3 @@ export const {
   changeCategory,
   changeBookId,
 } = actions;
-

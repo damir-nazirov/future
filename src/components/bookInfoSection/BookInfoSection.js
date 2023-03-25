@@ -1,4 +1,3 @@
-// bookInfoSection/BookInfoSection.js
 import React from "react";
 import "./bookInfoSection.css";
 

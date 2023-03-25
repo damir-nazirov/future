@@ -1,28 +1,30 @@
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import {
   changeTitle,
   clearOffset,
   changeSorting,
   changeCategory,
+  clearBooks,
 } from "../booksList/booksListSlice";
 import "./searchForm.css";
 
 const SearchForm = () => {
-  const [bookName, setBookName] = useState("");
+  const { title } = useSelector((state) => state.books);
+  const [bookName, setBookName] = useState(title);
   const dispatch = useDispatch();
-  
 
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const navigate = useNavigate();
 
   const onChangeTitle = () => {
+    dispatch(clearBooks());
     dispatch(clearOffset());
     dispatch(changeTitle(bookName));
-    setBookName("");
   };
 
   const handleKeyPress = (event) => {
@@ -35,6 +37,7 @@ const SearchForm = () => {
   };
 
   const [selectedSorting, setSelectedSorting] = useState("relevance");
+  console.log(selectedSorting);
 
   const button = (
     <button
@@ -63,7 +66,7 @@ const SearchForm = () => {
           value={bookName}
           onChange={(e) => setBookName(e.target.value)}
           onKeyDown={handleKeyPress}
-          type="text"
+          type="search"
           placeholder="search book"
           aria-label="Recipient's username"
           className="search-form__input"

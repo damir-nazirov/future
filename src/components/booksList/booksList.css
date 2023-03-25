@@ -26,7 +26,7 @@
     font-size: var(--font-size-large);
   }
   
-  button {
+  .books-list__load-more {
     margin: 0 auto var(--spacing-large) auto;
     display: inline-flex;
     align-items: center;
@@ -42,7 +42,7 @@
     line-height: 1.5;
   }
   
-  button:hover {
+  .books-list__load-more:hover {
     background-color: var(--button-hover-color);
   }
   

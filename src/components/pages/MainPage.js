@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import BooksList from "../booksList/booksList";
-import { changeBookId, clearOffset } from "../booksList/booksListSlice";
+import { fetchBookById } from "../booksList/booksListSlice";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -18,11 +18,11 @@ const MainPage = () => {
     }
   };
 
+  console.log(books);
   const filteredBooks = filteredCategoryBooks(books);
 
   const handleBookItemClick = (bookId) => {
-    dispatch(changeBookId(bookId));
-    dispatch(clearOffset());
+    dispatch(fetchBookById(bookId));
   };
 
   return (
