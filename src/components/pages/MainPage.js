@@ -18,7 +18,6 @@ const MainPage = () => {
     }
   };
 
-  console.log(books);
   const filteredBooks = filteredCategoryBooks(books);
 
   const handleBookItemClick = (bookId) => {

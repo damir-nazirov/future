@@ -37,7 +37,6 @@ const SearchForm = () => {
   };
 
   const [selectedSorting, setSelectedSorting] = useState("relevance");
-  console.log(selectedSorting);
 
   const button = (
     <button

@@ -24,9 +24,6 @@ const BooksList = ({ items, onBookItemClick }) => {
     error,
   } = useSelector((state) => state.books);
 
-  console.log(offset);
-  console.log(sorting);
-
   // Функция для обработки клика на кнопку "Загрузить еще"
   const onFetchClicked = useCallback(() => {
     dispatch(fetchBooks([title, offset, sorting, category]));
