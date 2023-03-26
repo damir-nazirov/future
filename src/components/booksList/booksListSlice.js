@@ -3,9 +3,9 @@ import { useHttp } from "../../hooks/http.hook";
 import { API_BASE, API_KEY, API_BASE_ById } from "../../api/apiConfig";
 import { BOOKS_PER_PAGE } from "../../constants";
 
-const persistedBookId = localStorage.getItem("bookId");
-const persistedTitle = localStorage.getItem("title");
-const persistedBooks = localStorage.getItem("books");
+const persistedBookId = sessionStorage.getItem("bookId");
+const persistedTitle = sessionStorage.getItem("title");
+const persistedBooks = sessionStorage.getItem("books");
 
 const initialState = {
   books: persistedBooks ? JSON.parse(persistedBooks) : [],
@@ -93,7 +93,7 @@ const booksSlice = createSlice({
     },
     changeTitle: (state, action) => {
       state.title = action.payload;
-      localStorage.setItem("title", action.payload);
+      sessionStorage.setItem("title", action.payload);
     },
     clearBooks: (state) => {
       state.books = [];
@@ -110,7 +110,7 @@ const booksSlice = createSlice({
     },
     changeBookId: (state, action) => {
       state.bookId = action.payload;
-      localStorage.setItem("bookId", action.payload);
+      sessionStorage.setItem("bookId", action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -129,7 +129,7 @@ const booksSlice = createSlice({
           state.books = uniqueBooks;
           state.newBooks = transformBooks.length;
           state.booksFound = transformBooks.length > 0;
-          localStorage.setItem("books", JSON.stringify(uniqueBooks));
+          sessionStorage.setItem("books", JSON.stringify(uniqueBooks));
         } else {
           state.booksFound = false;
         }
@@ -141,7 +141,7 @@ const booksSlice = createSlice({
 
       .addCase(fetchBookById.pending, (state, action) => {
         state.bookId = action.meta.arg;
-        localStorage.setItem("bookId", action.meta.arg);
+        sessionStorage.setItem("bookId", action.meta.arg);
         state.booksLoadingStatus = "loading";
       })
       .addCase(fetchBookById.fulfilled, (state, action) => {
