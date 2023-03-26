@@ -1,2 +1,2 @@
-export const BOOKS_PER_PAGE = 30;
-export const PAGINATION_MARGIN = 30;
+export const BOOKS_PER_PAGE = 15;
+export const PAGINATION_MARGIN = 15;
